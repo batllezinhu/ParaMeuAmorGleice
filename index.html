@@ -26,7 +26,7 @@
     overflow-x:hidden;
   }
   h1,h2,h3{font-family:'Pacifico',cursive;font-weight:400}
-
+ 
   /* ====== CABEÇALHO / HERO ====== */
   .hero{
     min-height:100vh;
@@ -59,7 +59,7 @@
     transition:transform .2s ease, box-shadow .2s ease;
   }
   .botao-entrar:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 12px 30px rgba(168,107,255,.5)}
-
+ 
   /* ====== SEÇÕES ====== */
   section{padding:80px 20px;max-width:1100px;margin:0 auto;text-align:center}
   section>h2{
@@ -67,7 +67,7 @@
     color:var(--rosa);
   }
   section>p.intro{margin-bottom:40px;font-weight:300;font-size:18px}
-
+ 
   /* ====== CONTADOR ====== */
   .contador{
     display:flex;flex-wrap:wrap;gap:16px;justify-content:center;
@@ -82,15 +82,14 @@
   .contador .caixa:nth-child(2){border-color:var(--lilas)}
   .contador .caixa:nth-child(3){border-color:var(--laranja)}
   .contador .caixa:nth-child(4){border-color:var(--amarelo)}
-  .contador .caixa:nth-child(5){border-color:var(--lilas)}
-  .contador .caixa:nth-child(6){border-color:var(--rosa)}
+  body.travado #secaoContador{display:none}
   .contador .caixa:hover{transform:translateY(-6px) rotate(-2deg)}
   .contador .numero{
     font-size:40px;font-weight:700;
     color:var(--lilas);
   }
   .contador .rotulo{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:1px}
-
+ 
   /* ====== GALERIA (mosaico: mostra a foto inteira, sem recortes) ====== */
   .galeria{
     columns:3;column-gap:18px;
@@ -119,7 +118,7 @@
     height:100%;color:var(--lilas);font-size:16px;font-weight:600;gap:10px;padding:20px;
   }
   .foto-placeholder .emoji{font-size:52px}
-
+ 
   /* ====== CARTAS ====== */
   .cartas{
     display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
@@ -146,7 +145,7 @@
     background:#fff;transform:rotateY(180deg);
     font-weight:400;font-size:16px;line-height:1.6;white-space:pre-line;
   }
-
+ 
   /* ====== CARTA FINAL ====== */
   .carta-final .papel{
     background:#fff;border-radius:28px;padding:50px 40px;max-width:760px;margin:0 auto;
@@ -161,12 +160,12 @@
     font-family:'Pacifico',cursive;font-size:30px;color:var(--rosa);
     text-align:right;margin-top:20px;
   }
-
+ 
   footer{
     text-align:center;padding:50px 20px;font-weight:300;color:var(--texto);
   }
   footer .linha{font-size:26px;font-family:'Pacifico',cursive;color:var(--lilas)}
-
+ 
   /* ====== MÚSICA ====== */
   #botaoMusica{
     position:fixed;bottom:24px;right:24px;z-index:999;
@@ -187,7 +186,7 @@
     max-width:260px;
   }
   #avisoMusica.visivel{opacity:1}
-
+ 
   /* Aviso grande quando o navegador bloqueia o som automático */
   #overlayMusica{
     position:fixed;inset:0;z-index:998;display:none;
@@ -209,7 +208,7 @@
     font-weight:300;font-size:14px;opacity:.75;
   }
   @keyframes pulsar-suave{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
-
+ 
   /* ====== RESPONSIVO (celulares e tablets) ====== */
   @media (max-width: 900px){
     .galeria{columns:2;column-gap:12px}
@@ -236,7 +235,7 @@
     footer{padding:40px 16px}
     footer .linha{font-size:22px}
   }
-
+ 
   /* ====== CORAÇÕES FLUTUANDO ====== */
   .coracao-flutuante{
     position:fixed;bottom:-60px;z-index:1;pointer-events:none;
@@ -249,7 +248,7 @@
 </style>
 </head>
 <body class="travado">
-
+ 
 <style>
   /* ====== TELA DE SENHA (cadeado romântico) ====== */
   body.travado{overflow:hidden;height:100vh}
@@ -295,7 +294,7 @@
   .treme{animation:treme .4s}
   @keyframes treme{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
 </style>
-
+ 
 <!-- ===== TELA DE SENHA ===== -->
 <div id="telaCadeado">
   <div class="cadeado-caixa">
@@ -309,16 +308,16 @@
     <div id="erroCadeado" class="erro-cadeado">Hmm… essa não é a senha do nosso segredo 💔 Tente de novo!</div>
   </div>
 </div>
-
+ 
 <div id="conteudoSite"></div>
-
+ 
 <script>
 /* ============================================================
    🔐 CONTEÚDO CRIPTOGRAFADO (AES-256-CBC + PBKDF2)
    Só abre com a senha especial do casal. Sem senha, o conteúdo
    fica ilegível — nem os textos, nem as cartas, nem o contador.
    ============================================================ */
-
+ 
 const CADEADO = {
   saltBatch: "KDTkyolz5e2KG39/zKD3aw==",
   ivBase64: "CVtY7nyqzmguDTBpH+ko0Q==",
@@ -351,12 +350,31 @@ async function descriptografar(senha){
 function desbloquear(html){
   const destino = document.getElementById('conteudoSite');
   destino.innerHTML = html;
+  let contador = destino.querySelector('.contador');
+  if (!contador) {
+    const secaoContador = document.createElement('section');
+    secaoContador.id = 'secaoContador';
+    secaoContador.setAttribute('aria-labelledby', 'tituloContador');
+    secaoContador.innerHTML = `
+      <h2 id="tituloContador">Nosso tempo juntos</h2>
+      <p class="intro">Cada momento ao seu lado é especial 💖</p>
+      <div class="contador" aria-live="polite"></div>`;
+    contador = secaoContador.querySelector('.contador');
+    const hero = destino.querySelector('.hero');
+    if (hero) {
+      hero.insertAdjacentElement('afterend', secaoContador);
+    } else {
+      destino.prepend(secaoContador);
+    }
+  }
   destino.querySelectorAll('script').forEach(s => {
     const novo = document.createElement('script');
     Array.from(s.attributes).forEach(a => novo.setAttribute(a.name, a.value));
     novo.textContent = s.textContent;
     s.replaceWith(novo); // próprios scripts executam aqui
   });
+  renderizarContadorTempo(contador);
+  setInterval(() => renderizarContadorTempo(contador), 3600000);
   document.title = 'Para Gleice ❤️';
   document.body.classList.remove('travado');
   tela = document.getElementById('telaCadeado');
@@ -387,6 +405,51 @@ async function abrirCadeado(){
 document.getElementById('campoSenha').addEventListener('keydown', function(e){
   if (e.key === 'Enter') abrirCadeado();
 });
+
+function renderizarContadorTempo(contadorElement) {
+  // Data base fornecida: 26/06/2026 18h
+  const dataBase = new Date("2026-06-26T18:00:00").getTime();
+  const agora = new Date().getTime();
+  const diferenca = Math.max(0, agora - dataBase);
+
+  // Cálculo de tempo
+  const msAno = 365.25 * 24 * 60 * 60 * 1000;
+  const msMes = 30.44 * 24 * 60 * 60 * 1000;
+  const msDia = 24 * 60 * 60 * 1000;
+  const msHora = 60 * 60 * 1000;
+
+  // Separar o tempo decorrido em anos, meses, dias e horas
+  let anos = Math.floor(diferenca / msAno);
+  let restante = diferenca % msAno;
+
+  let meses = Math.floor(restante / msMes);
+  restante = restante % msMes;
+
+  let dias = Math.floor(restante / msDia);
+  restante = restante % msDia;
+
+  let horas = Math.floor(restante / msHora);
+
+  // Mapeamento dos valores e rótulos
+  const unidades = [
+    { valor: anos, rotulo: 'ANOS', id: 'c-anos' },
+    { valor: meses, rotulo: 'MESES', id: 'c-meses' },
+    { valor: dias, rotulo: 'DIAS', id: 'c-dias' },
+    { valor: horas, rotulo: 'HORAS', id: 'c-horas' }
+  ];
+
+  // Construção do HTML dinamicamente
+  let htmlContador = '';
+  unidades.forEach(u => {
+    htmlContador += `
+      <div class="caixa">
+        <div class="numero" id="${u.id}">${u.valor}</div>
+        <div class="rotulo">${u.rotulo}</div>
+      </div>`;
+  });
+
+  contadorElement.innerHTML = htmlContador;
+}
 </script>
 </body>
 </html>
